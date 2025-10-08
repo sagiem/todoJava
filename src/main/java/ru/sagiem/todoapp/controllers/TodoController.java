@@ -11,6 +11,7 @@ public class TodoController {
     public String index(Model model) {
         model.addAttribute("data","Hello");
         return "index";
+
     }
 
 }
