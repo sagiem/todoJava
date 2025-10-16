@@ -49,6 +49,7 @@ public class TodoController implements CommandLineRunner {
         List<TodoItem> allTodos = todoItemRepository.findByTitleContainingIgnoreCase(searchTerm);
         model.addAttribute("allTodos", allTodos);
         model.addAttribute("newTodo", new TodoItem());
+        model.addAttribute("searchTerm", new TodoItem());
         return "index";
     }
 
