@@ -3,9 +3,7 @@ package ru.sagiem.todoapp.controllers;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.sagiem.todoapp.model.TodoItem;
 import ru.sagiem.todoapp.repositories.TodoItemRepository;
 
@@ -33,6 +31,27 @@ public class TodoController implements CommandLineRunner {
         todoItemRepository.save(todoItem);
         return "redirect:/";
     }
+
+    @PostMapping("/delete/{id}")
+    public String deleteTodoItem(@PathVariable("id") long id) {
+        todoItemRepository.deleteById(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/removeAll")
+    public String removeAll() {
+        todoItemRepository.deleteAll();
+        return "redirect:/";
+    }
+
+    @PostMapping("/search")
+    public String searchTodoItems(@RequestParam("searchTerm") String searchTerm, Model model) {
+        List<TodoItem> allTodos = todoItemRepository.findByTitleContainingIgnoreCase(searchTerm);
+        model.addAttribute("allTodos", allTodos);
+        model.addAttribute("newTodo", new TodoItem());
+        return "index";
+    }
+
 
     @Override
     public void run(String... args) throws Exception {
